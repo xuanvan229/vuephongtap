@@ -148,6 +148,7 @@
 
 <script>
 import Firebase from 'Firebase'
+import moment from 'moment'
 let config = {
   apiKey: 'AIzaSyDg4PMF2hQ6ZtjywC1ZDzM9J0i-igqo-tI',
   authDomain: 'phongtap-95ebd.firebaseapp.com',
@@ -222,9 +223,10 @@ export default {
   },
   computed: {
     filterUser: function () {
+      console.log(this.listuser)
       var articlearray = this.listuser
       var searchitem = this.searchString
-      console.log(articlearray)
+      // console.log(articlearray)
       if (!searchitem) {
         return articlearray
       }
@@ -240,16 +242,20 @@ export default {
   },
   methods: {
     addUser: function () {
-      console.log(this.newuser)
-      var d = this.newuser.birthday
-      var parts = d.match(/(\d+)/g)
-      var m = new Date(parts[0], parts[1] - 1, parts[2])
-      console.log(m.toString())
-      console.log(m.getDate())
-      var xx = m.setDate(m.getDate() + 30)
-
-      var timecv = new Date(xx).toDateString()
-      console.log(timecv)
+      var dategiahan = moment(this.newuser.giahan)
+      // var parts = dategiahan.match(/(\d+)/g)
+      // var dateafterconvert = new Date(parts[0], parts[1] - 1, parts[2])
+      console.log(moment(dategiahan).format('L'))
+      var x = moment(dategiahan).format('L')
+      var ngaygiahan = moment(dategiahan).date()
+      var thanggiahan = moment(dategiahan).month() + 1
+      var namgiahan = moment(dategiahan).year()
+      console.log('Ngay ' + ngaygiahan + ' Thang ' + thanggiahan + ' Nam ' + namgiahan)
+      console.log(ngaygiahan)
+      this.newuser.giahan = x
+      var getdate = moment(x).add(30 * this.newuser.sothang, 'days')
+      var datehethan = moment(getdate).format('L')
+      this.newuser.hethan = datehethan
       this.newuser.stt = this.listuser.length
       danhsachref.push(this.newuser)
       this.newuser.stt = ''
