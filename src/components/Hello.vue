@@ -4,7 +4,7 @@
       <el-col :span="24">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3>Add User</h3>
+            <h3>Add User</h3>{{newuser.birthday}}
           </div>
           <div class="panel-body">
             <form class="form-inline" id="add" v-on:submit.prevent="addUser">
@@ -46,12 +46,7 @@
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày sinh</label>
-                <el-date-picker
-                  class="fullform"
-                  v-model="newuser.birthday"
-                  type="date"
-                  placeholder="Pick a day">
-                </el-date-picker>
+                <input class="form-group" type="date" v-model="newuser.birthday">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
@@ -66,23 +61,13 @@
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày phát hành</label>
-                <el-date-picker
-                  class="fullform"
-                  v-model="phathanh"
-                  type="date"
-                  placeholder="Pick a day">
-                </el-date-picker>
+                <input class="form-group" type="date" v-model="newuser.phathanh">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày gia hạn</label>
-                <el-date-picker
-                  class="fullform"
-                  v-model="newuser.giahan"
-                  type="date"
-                  placeholder="Pick a day">
-                </el-date-picker>
+                <input class="form-group" type="date" v-model="newuser.giahan">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
@@ -177,6 +162,9 @@ let danhsachref = db.ref('danhsach')
 
 export default {
   name: 'hello',
+  components: {
+    'vue-datetime-picker': require('vue-datetime-picker')
+  },
   firebase: {
     listuser: danhsachref
   },
@@ -206,7 +194,7 @@ export default {
         goi: '',
         lop: '',
         name: '',
-        birthday: '',
+        'birthday': '',
         gioitinh: '',
         diachi: '',
         phathanh: '',
@@ -253,13 +241,17 @@ export default {
   methods: {
     addUser: function () {
       console.log(this.newuser)
-      var newuser2 = {
-        stt: '1',
-        phathanh: this.phathanh
-      }
-      console.log(this.newuser.phathanh)
+      var d = this.newuser.birthday
+      var parts = d.match(/(\d+)/g)
+      var m = new Date(parts[0], parts[1] - 1, parts[2])
+      console.log(m.toString())
+      console.log(m.getDate())
+      var xx = m.setDate(m.getDate() + 30)
+
+      var timecv = new Date(xx).toDateString()
+      console.log(timecv)
       this.newuser.stt = this.listuser.length
-      danhsachref.push(newuser2)
+      danhsachref.push(this.newuser)
       this.newuser.stt = ''
       this.newuser.goi = ''
       this.newuser.lop = ''
