@@ -1,11 +1,21 @@
 <template>
   <div class="hello">
+
+    <h2>{{checked}}</h2>
     <el-row>
       <el-col :span="24">
+        <el-col :xs="12" :sm="12" :md="12">
+          <h1>{{msg}}</h1>
+        </el-col>
+        <el-col :xs="12" :sm="12" :md="12">
+          <el-button v-if="!checkadd" v-on:click="showadduser()"class="addbtn"type="primary"><i class="el-icon-edit"></i></el-button>
+          <el-button v-else v-on:click="doneadduser()"class="addbtn"type="primary"><i class="el-icon-check"></i></el-button>
+        </el-col>
+      </el-col>
+    </el-row>
+    <el-row v-if="checkadd">
+      <el-col :span="24">
         <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3>Add User</h3>{{newuser.birthday}}
-          </div>
           <div class="panel-body">
             <form class="form-inline" id="add" v-on:submit.prevent="addUser">
               <el-col :sx="24" :sm="12" :md="6">
@@ -87,6 +97,91 @@
         </div>
       </el-col>
     </el-row>
+    <el-row v-if="checkupdate">
+      <el-col :span="24">
+        <h1>Update user</h1>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form class="form-inline" id="add" v-on:submit.prevent="addUser">
+              <el-col :sx="24" :sm="12" :md="6">
+              <div class="form-group">
+                <label for="gioitinh">Giới Tính</label>
+                <el-select class="fullform" v-model="userupdate.gioitinh" placeholder="Select">
+                  <el-option
+                    v-for="item in listgioitinh"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="6">
+              <div class="form-group">
+                <label for="lop">Lớp</label>
+                <el-select class="fullform" v-model="userupdate.goi" placeholder="Select">
+                  <el-option
+                    v-for="item in listphongtap"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="6">
+              <div class="form-group">
+                <label for="GoiTap">Họ và Tên</label>
+                <el-input class="fullform"
+                  placeholder="Please Input"
+                  v-model="userupdate.name">
+                </el-input>
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="6">
+              <div class="form-group">
+                <label for="GoiTap">Ngày sinh</label>
+                <input class="form-group" type="date" v-model="userupdate.birthday">
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="6">
+              <div class="form-group">
+                <label for="GoiTap">Địa chỉ</label>
+                <el-input class="fullform"
+                  placeholder="Please Input"
+                  v-model="userupdate.diachi">
+                </el-input>
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="6">
+              <div class="form-group">
+                <label for="GoiTap">Ngày phát hành</label>
+                <input class="form-group" type="date" v-model="userupdate.phathanh">
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="6">
+              <div class="form-group">
+                <label for="GoiTap">Ngày gia hạn</label>
+                <input class="form-group" type="date" v-model="userupdate.giahan">
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="6">
+              <div class="form-group">
+                <label for="GoiTap">Số tháng đóng</label>
+                <el-input class="fullform"
+                  placeholder="Please Input"
+                  v-model="userupdate.sothang">
+                </el-input>
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="24" :md="24">
+            <el-button v-on:click="updateUser"type="primary">Primary Button</el-button>
+            </el-col>
+            </form>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
     <div class="page-header">
       <h1>{{msg}}</h1>
     </div>
@@ -120,8 +215,8 @@
               <th>Ẩn</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="user in filterUser">
+            <transition-group name="fade"  tag="tbody">
+            <tr class="user" v-if="!user.checked" v-for="user in filterUser" v-bind:key="user" >
               <td>{{user.stt}}</td>
               <td>{{user.makh}}</td>
               <td>{{user.goi}}</td>
@@ -131,15 +226,19 @@
               <td>{{user.gioitinh}}</td>
               <td>{{user.diachi}}</td>
               <td>{{user.phathanh}}</td>
-              <td>{{user.sothang}}</td>
               <td>{{user.giahan}}</td>
+              <td>{{user.sothang}}</td>
               <td>{{user.hethan}}</td>
               <td>{{user.trangthai}}</td>
-              <td><span class="glyphicon glyphicon-pencil" v-on:click="update(artile)"></span>
+              <td><span class="glyphicon glyphicon-pencil" v-on:click="update(user)"></span>
               </td>
-              <td><span class="glyphicon glyphicon-trash" v-on:click="removeBook(artile)"></span></td>
+              <td><label class="switch" >
+              <input v-on:click="check(user)" type="checkbox" id="checkbox" v-model="user.checked" checked>
+              <div class="slider round"></div>
+              </label></td>
             </tr>
-          </tbody>
+          </transition-group>
+
         </table>
       </div>
     </div>
@@ -202,7 +301,8 @@ export default {
         sothang: '',
         giahan: '',
         hethan: '',
-        trangthai: ''
+        trangthai: '',
+        checked: false
       },
       searchString: '',
       stt: '',
@@ -217,14 +317,31 @@ export default {
       sothang: '',
       giahan: '',
       hethan: '',
-      trangthai: ''
-
+      trangthai: '',
+      checkadd: false,
+      checkupdate: false,
+      checked: false,
+      userupdate: '',
+      key: ''
     }
   },
   computed: {
     filterUser: function () {
       console.log(this.listuser)
-      var articlearray = this.listuser
+      var ngayhientai = moment().date()
+      var thanghientai = moment().month() + 1
+      var namhientai = moment().year()
+      var articlearray = this.listuser.map(function (item) {
+        if ((ngayhientai >= moment(item.hethan).date()) && (thanghientai >= moment(item.hethan).month() + 1) && (namhientai >= moment(item.hethan).year())) {
+          if (ngayhientai >= moment(item.hethan).date()) {
+            console.log('dau tien')
+          }
+          item.trangthai = 'Đã hết hạn'
+        } else {
+          item.trangthai = 'Chưa hết hạn'
+        }
+        return item
+      })
       var searchitem = this.searchString
       // console.log(articlearray)
       if (!searchitem) {
@@ -256,7 +373,7 @@ export default {
       var getdate = moment(x).add(30 * this.newuser.sothang, 'days')
       var datehethan = moment(getdate).format('L')
       this.newuser.hethan = datehethan
-      this.newuser.stt = this.listuser.length
+      this.newuser.stt = this.listuser.length + 1
       danhsachref.push(this.newuser)
       this.newuser.stt = ''
       this.newuser.goi = ''
@@ -270,6 +387,36 @@ export default {
       this.newuser.giahan = ''
       this.newuser.hethan = ''
       this.newuser.trangthai = ''
+    },
+    updateUser: function () {
+      var dategiahan = moment(this.userupdate.giahan)
+      var x = moment(dategiahan).format('L')
+      var getdate = moment(x).add(30 * this.userupdate.sothang, 'days')
+      var datehethan = moment(getdate).format('L')
+      this.userupdate.hethan = datehethan
+      delete this.userupdate['.key']
+      danhsachref.child(this.key).set(this.userupdate)
+      this.userupdate = ''
+    },
+    showadduser: function () {
+      this.checkadd = true
+    },
+    doneadduser: function () {
+      this.checkadd = false
+    },
+    update: function (user) {
+      this.userupdate = user
+      this.key = user['.key']
+      console.log(this.key)
+      this.checkupdate = true
+      console.log(user.giahan)
+    },
+    check: function (user) {
+      var key = user['.key']
+      delete user['.key']
+      danhsachref.child(key).set(user)
+      console.log('check')
+      console.log(user.checked)
     }
   }
 }
@@ -291,6 +438,13 @@ ul {
 .form-group {
   width:100%;
 }
+.addbtn {
+  width:50px;
+  height:50px;
+  border-radius: 50%;
+  float: right;
+  margin-right: 50px;
+}
 li {
   display: inline-block;
   margin: 0 10px;
@@ -298,5 +452,67 @@ li {
 
 a {
   color: #42b983;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+.user {
+  transition: 1s;
+}
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+.slider.round:before {
+  border-radius: 50%;
 }
 </style>
