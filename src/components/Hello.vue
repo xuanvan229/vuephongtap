@@ -56,7 +56,12 @@
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày sinh</label>
-                <input class="form-group" type="date" v-model="newuser.birthday">
+                <el-input
+                  placeholder="Pick a date"
+                  icon="search"
+                  v-model="newuser.birthday">
+                </el-input>
+                <!-- <input class="form-group" type="date" v-model="newuser.birthday"> -->
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
@@ -230,7 +235,7 @@
               <td>{{user.sothang}}</td>
               <td>{{user.hethan}}</td>
               <td>{{user.trangthai}}</td>
-              <td><span class="glyphicon glyphicon-pencil" v-on:click="update(user)"></span>
+              <td><span class="glyphicon glyphicon-pencil updatefun" v-on:click="update(user)"></span>
               </td>
               <td><label class="switch" >
               <input v-on:click="check(user)" type="checkbox" id="checkbox" v-model="user.checked" checked>
@@ -302,6 +307,7 @@ export default {
         giahan: '',
         hethan: '',
         trangthai: '',
+        key: '',
         checked: false
       },
       searchString: '',
@@ -322,7 +328,8 @@ export default {
       checkupdate: false,
       checked: false,
       userupdate: '',
-      key: ''
+      key1: '',
+      key2: ''
     }
   },
   computed: {
@@ -362,16 +369,22 @@ export default {
       var dategiahan = moment(this.newuser.giahan)
       // var parts = dategiahan.match(/(\d+)/g)
       // var dateafterconvert = new Date(parts[0], parts[1] - 1, parts[2])
-      console.log(moment(dategiahan).format('L'))
-      var x = moment(dategiahan).format('L')
+      console.log(moment(dategiahan).format('DD/MM/YYYY'))
+      var x = moment(dategiahan).format('DD/MM/YYYY')
+      var y = moment(dategiahan).format('L')
+      var datephathanh = moment(this.newuser.phathanh)
+      var xph = moment(datephathanh).format('DD/MM/YYYY')
+      console.log(xph)
+      this.newuser.phathanh = xph
       var ngaygiahan = moment(dategiahan).date()
       var thanggiahan = moment(dategiahan).month() + 1
       var namgiahan = moment(dategiahan).year()
       console.log('Ngay ' + ngaygiahan + ' Thang ' + thanggiahan + ' Nam ' + namgiahan)
       console.log(ngaygiahan)
       this.newuser.giahan = x
-      var getdate = moment(x).add(30 * this.newuser.sothang, 'days')
-      var datehethan = moment(getdate).format('L')
+      var getdate = moment(y).add(30 * this.newuser.sothang, 'days')
+      var datehethan = moment(getdate).format('DD/MM/YYYY')
+      console.log(datehethan)
       this.newuser.hethan = datehethan
       this.newuser.stt = this.listuser.length + 1
       danhsachref.push(this.newuser)
@@ -391,11 +404,16 @@ export default {
     updateUser: function () {
       var dategiahan = moment(this.userupdate.giahan)
       var x = moment(dategiahan).format('L')
+      var y = moment(dategiahan).format('DD/MM/YYYY')
+      var datephathanh = moment(this.userupdate.phathanh)
+      var xph = moment(datephathanh).format('DD/MM/YYYY')
+      this.userupdate.phathanh = xph
       var getdate = moment(x).add(30 * this.userupdate.sothang, 'days')
-      var datehethan = moment(getdate).format('L')
+      var datehethan = moment(getdate).format('DD/MM/YYYY')
       this.userupdate.hethan = datehethan
+      this.userupdate.giahan = y
       delete this.userupdate['.key']
-      danhsachref.child(this.key).set(this.userupdate)
+      danhsachref.child(this.key2).set(this.userupdate)
       this.userupdate = ''
     },
     showadduser: function () {
@@ -406,8 +424,16 @@ export default {
     },
     update: function (user) {
       this.userupdate = user
-      this.key = user['.key']
-      console.log(this.key)
+      this.userupdate.phathanh = moment(user.phathanh).format('YYYY-MM-DD')
+      this.userupdate.giahan = moment(user.giahan).format('YYYY-MM-DD')
+      console.log(this.userupdate.phathanh)
+      console.log(this.userupdate.giahan)
+      this.key1 = user['.key']
+      if (this.key1 != null) {
+        this.key2 = this.key1
+      }
+      console.log(this.key1)
+      console.log(this.key2)
       this.checkupdate = true
       console.log(user.giahan)
     },
@@ -511,6 +537,9 @@ input:checked + .slider:before {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0
+}
+.updatefun {
+  cursor: pointer;
 }
 .slider.round:before {
   border-radius: 50%;
