@@ -424,8 +424,8 @@ export default {
     },
     update: function (user) {
       this.userupdate = user
-      this.userupdate.phathanh = moment(user.phathanh).format('YYYY-MM-DD')
-      this.userupdate.giahan = moment(user.giahan).format('YYYY-MM-DD')
+      this.userupdate.phathanh = moment(user.phathanh).format('L')
+      this.userupdate.giahan = moment(user.giahan).format('L')
       console.log(this.userupdate.phathanh)
       console.log(this.userupdate.giahan)
       this.key1 = user['.key']
