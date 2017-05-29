@@ -4,24 +4,25 @@
     <h2>{{checked}}</h2>
     <el-row>
       <el-col :span="24">
-        <el-col :xs="12" :sm="12" :md="12">
-          <h1>{{msg}}</h1>
+        <el-col :xs="24" :sm="24" :md="24">
+          <h1 class="titleMain">{{msg}}</h1>
         </el-col>
-        <el-col :xs="12" :sm="12" :md="12">
-          <el-button v-if="!checkadd" v-on:click="showadduser()"class="addbtn"type="primary"><i class="el-icon-edit"></i></el-button>
-          <el-button v-else v-on:click="doneadduser()"class="addbtn"type="primary"><i class="el-icon-check"></i></el-button>
+        <el-col :xs="24" :sm="24" :md="24">
+          <el-button v-if="!checkadd" v-on:click="showadduser()" class="addbtn"type="primary"><i class="el-icon-edit"></i> Thêm thành viên</el-button>
+          <el-button v-else v-on:click="doneadduser()" class="addbtn"type="primary"><i class="el-icon-close"></i> Đóng</el-button>
         </el-col>
       </el-col>
     </el-row>
     <el-row v-if="checkadd">
       <el-col :span="24">
         <div class="panel panel-default">
-          <div class="panel-body">
+          <div class="panel-body ">
+            <h4 class="titleh4">Nhập thông tin thành viên mới</h4>
             <form class="form-inline" id="add" v-on:submit.prevent="addUser">
               <el-col :sx="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="gioitinh">Giới Tính</label>
-                <el-select class="fullform" v-model="newuser.gioitinh" placeholder="Select">
+                <el-select class="fullform" v-model="newuser.gioitinh" placeholder="Nam/Nữ">
                   <el-option
                     v-for="item in listgioitinh"
                     :key="item.value"
@@ -34,7 +35,7 @@
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="lop">Lớp</label>
-                <el-select class="fullform" v-model="newuser.goi" placeholder="Select">
+                <el-select class="fullform" v-model="newuser.goi" placeholder="Gym/Aerobic">
                   <el-option
                     v-for="item in listphongtap"
                     :key="item.value"
@@ -46,25 +47,25 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="GoiTap">Họ và Tên</label>
+                <label for="GoiTap">Họ và tên</label>
                 <el-input class="fullform"
-                  placeholder="Please Input"
+                  placeholder="Nguyễn Văn A..."
                   v-model="newuser.name">
                 </el-input>
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="GoiTap">Ngày sinh</label>
+                <label for="GoiTap">Năm sinh</label>
                 <el-input
-                  placeholder="Pick a date"
-                  icon="search"
+                  placeholder="Nhập năm sinh"
+                  icon="date"
                   v-model="newuser.birthday">
                 </el-input>
                 <!-- <input class="form-group" type="date" v-model="newuser.birthday"> -->
               </div>
             </el-col>
-            <el-col :xs="24" :sm="12" :md="6">
+            <!-- <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Địa chỉ</label>
                 <el-input class="fullform"
@@ -72,30 +73,30 @@
                   v-model="newuser.diachi">
                 </el-input>
               </div>
-            </el-col>
+            </el-col> -->
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày phát hành</label>
-                <input class="form-group" type="date" v-model="newuser.phathanh">
+                <input class="form-group el-input__inner" type="date" v-model="newuser.phathanh">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày gia hạn</label>
-                <input class="form-group" type="date" v-model="newuser.giahan">
+                <input class="form-group el-input__inner" type="date" v-model="newuser.giahan">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="GoiTap">Số tháng đóng</label>
+                <label for="GoiTap">Số tháng gia hạn thêm</label>
                 <el-input class="fullform"
-                  placeholder="Please Input"
-                  v-model="newuser.sothang">
+                  placeholder="1 tháng = 30 ngày"
+                  v-model="newuser.sothang" min="1" type="number">
                 </el-input>
               </div>
             </el-col>
             <el-col :xs="24" :sm="24" :md="24">
-            <el-button v-on:click="addUser"type="primary">Primary Button</el-button>
+            <el-button v-on:click="addUser"type="primary" class="mgn_left_10">Thêm</el-button>
             </el-col>
             </form>
           </div>
@@ -104,14 +105,15 @@
     </el-row>
     <el-row v-if="checkupdate">
       <el-col :span="24">
-        <h1>Update user</h1>
+        <!-- <h1>Update user</h1> -->
         <div class="panel panel-default">
           <div class="panel-body">
+            <h4 class="titleh4">Chỉnh sửa thông tin thành viên</h4>
             <form class="form-inline" id="add" v-on:submit.prevent="addUser">
               <el-col :sx="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="gioitinh">Giới Tính</label>
-                <el-select class="fullform" v-model="userupdate.gioitinh" placeholder="Select">
+                <el-select class="fullform" v-model="userupdate.gioitinh" placeholder="Nam/Nữ">
                   <el-option
                     v-for="item in listgioitinh"
                     :key="item.value"
@@ -136,20 +138,19 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="GoiTap">Họ và Tên</label>
+                <label for="GoiTap">Họ và tên</label>
                 <el-input class="fullform"
-                  placeholder="Please Input"
                   v-model="userupdate.name">
                 </el-input>
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="GoiTap">Ngày sinh</label>
-                <input class="form-group" type="date" v-model="userupdate.birthday">
+                <label for="GoiTap">Năm sinh</label>
+                <input class="form-group el-input__inner" type="date" v-model="userupdate.birthday">
               </div>
             </el-col>
-            <el-col :xs="24" :sm="12" :md="6">
+            <!-- <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Địa chỉ</label>
                 <el-input class="fullform"
@@ -157,85 +158,87 @@
                   v-model="userupdate.diachi">
                 </el-input>
               </div>
-            </el-col>
+            </el-col> -->
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày phát hành</label>
-                <input class="form-group" type="date" v-model="userupdate.phathanh">
+                <input class="form-group el-input__inner" type="date" v-model="userupdate.phathanh">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày gia hạn</label>
-                <input class="form-group" type="date" v-model="userupdate.giahan">
+                <input class="form-group el-input__inner" type="date" v-model="userupdate.giahan">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="GoiTap">Số tháng đóng</label>
+                <label for="GoiTap">Số tháng gia hạn</label>
                 <el-input class="fullform"
-                  placeholder="Please Input"
-                  v-model="userupdate.sothang">
+                  placeholder="1 tháng = 30 ngày"
+                  v-model="userupdate.sothang" min="1" type="number">
                 </el-input>
               </div>
             </el-col>
             <el-col :xs="24" :sm="24" :md="24">
-            <el-button v-on:click="updateUser"type="primary">Primary Button</el-button>
+            <el-button v-on:click="updateUser"type="primary" class="mgn_left_10">Cập nhật</el-button>
             </el-col>
             </form>
           </div>
         </div>
       </el-col>
     </el-row>
-    <div class="page-header">
+    <!-- <div class="page-header">
       <h1>{{msg}}</h1>
-    </div>
+    </div> -->
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3>All User</h3>
+        <h3 class="titleSearchMem"><i class="el-icon-search"></i> Tìm thành viên</h3>
         <form class="group-inline" id="search" v-cloak>
-          <div class="form-group">
-            <input type="text" v-model="searchString" placeholder="Nhập tên cần tìm">
+          <div class="form-group searchMember ">
+            <input type="text" class="el-input__inner" v-model="searchString" placeholder="Nhập tên cần tìm">
           </div>
         </form>
       </div>
       <div class="panel-body">
+        <h3 class="titleAll">Danh sách tất cả thành viên</h3>
         <table class="table table-striped">
           <thead>
             <tr>
               <th>STT</th>
-              <th>Mã KH</th>
-              <th>Gói tập</th>
-              <th>Lớp</th>
-              <th>Họ và Tên</th>
-              <th>Ngày Sinh</th>
-              <th>Giới tính</th>
-              <th>Địa chỉ</th>
+              <!-- <th>Mã KH</th> -->
+              <th class="tal">Lớp</th>
+              <th class="tal">Gói tập</th>
+              <th class="tal">Họ và tên</th>
+              <th>Năm sinh</th>
+              <th class="tal">Giới tính</th>
+              <!-- <th>Địa chỉ</th> -->
               <th>Ngày phát hành</th>
               <th>Ngày gia hạn</th>
               <th>Số tháng đóng</th>
               <th>Ngày hết hạn</th>
               <th>Trạng thái</th>
-              <th>Cập nhât</th>
+              <th>Cập nhật</th>
               <th>Ẩn</th>
             </tr>
           </thead>
-            <transition-group name="fade"  tag="tbody">
+            <transition-group name="fade" tag="tbody">
             <tr class="user" v-if="!user.checked" v-for="user in filterUser" v-bind:key="user" >
-              <td>{{user.stt}}</td>
-              <td>{{user.makh}}</td>
-              <td>{{user.goi}}</td>
-              <td>{{user.lop}}</td>
-              <td>{{user.name}}</td>
+              <!-- <td class="tac">{{user.stt}}</td> -->
+              <td><!-- dành cho stt --></td>
+              <!-- <td>{{user.makh}}</td> -->
+              <td class="tal">{{user.lop}}</td>
+              <td class="tal">{{user.goi}}</td>
+              <td class="tal">{{user.name}}</td>
               <td>{{user.birthday}}</td>
-              <td>{{user.gioitinh}}</td>
-              <td>{{user.diachi}}</td>
+              <td class="tal">{{user.gioitinh}}</td>
+              <!-- <td>{{user.diachi}}</td> -->
               <td>{{user.phathanh}}</td>
               <td>{{user.giahan}}</td>
               <td>{{user.sothang}}</td>
               <td>{{user.hethan}}</td>
               <td>{{user.trangthai}}</td>
-              <td><span class="glyphicon glyphicon-pencil updatefun" v-on:click="update(user)"></span>
+              <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
               </td>
               <td><label class="switch" >
               <input v-on:click="check(user)" type="checkbox" id="checkbox" v-model="user.checked" checked>
@@ -243,10 +246,125 @@
               </label></td>
             </tr>
           </transition-group>
-
         </table>
+        <div class="listHethan">
+            <h3 class="titleHethan">Danh sách thành viên đã hết hạn</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th class="tal">Lớp</th>
+                        <th class="tal">Gói tập</th>
+                        <th class="tal">Họ và tên</th>
+                        <th>Năm sinh</th>
+                        <th class="tal">Giới tính</th>
+                        <th>Ngày phát hành</th>
+                        <th>Ngày gia hạn</th>
+                        <th>Số tháng đóng</th>
+                        <th>Ngày hết hạn</th>
+                        <th>Trạng thái</th>
+                        <th>Cập nhật</th>
+                        <th>Ẩn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><!--STT--></td>
+                        <td class="tal">Aerobic</td>
+                        <td class="tal"><!--Gói tập--></td>
+                        <td class="tal">Nguyễn Văn A</td>
+                        <td>12</td>
+                        <td>Nam</td>
+                        <td>29/05/2017</td>
+                        <td>29/05/2017</td>
+                        <td>1</td>
+                        <td>28/06/2017</td>
+                        <td>Đã hết hạn</td>
+                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
+                        </td>
+                        <td>button</td>
+                    </tr>
+                    <tr>
+                        <td><!--STT--></td>
+                        <td class="tal">Aerobic</td>
+                        <td class="tal"><!--Gói tập--></td>
+                        <td class="tal">Nguyễn Văn A</td>
+                        <td>12</td>
+                        <td>Nam</td>
+                        <td>29/05/2017</td>
+                        <td>29/05/2017</td>
+                        <td>1</td>
+                        <td>28/06/2017</td>
+                        <td>Đã hết hạn</td>
+                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
+                        </td>
+                        <td>button</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="listHide">
+            <h3 class="titleHide">Danh sách thành viên bị ẩn</h3>
+            <p class="red_italic">(thành viên đã nghỉ tập lâu ngày không gia hạn)</p>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th class="tal">Lớp</th>
+                        <th class="tal">Gói tập</th>
+                        <th class="tal">Họ và tên</th>
+                        <th>Năm sinh</th>
+                        <th class="tal">Giới tính</th>
+                        <th>Ngày phát hành</th>
+                        <th>Ngày gia hạn</th>
+                        <th>Số tháng đóng</th>
+                        <th>Ngày hết hạn</th>
+                        <th>Trạng thái</th>
+                        <th>Cập nhật</th>
+                        <th>Hiện</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><!--STT--></td>
+                        <td class="tal">Aerobic</td>
+                        <td class="tal"><!--Gói tập--></td>
+                        <td class="tal">Nguyễn Văn A</td>
+                        <td>12</td>
+                        <td>Nam</td>
+                        <td>29/05/2017</td>
+                        <td>29/05/2017</td>
+                        <td>1</td>
+                        <td>28/06/2017</td>
+                        <td>Đã hết hạn</td>
+                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
+                        </td>
+                        <td>button</td>
+                    </tr>
+                    <tr>
+                        <td><!--STT--></td>
+                        <td class="tal">Aerobic</td>
+                        <td class="tal"><!--Gói tập--></td>
+                        <td class="tal">Nguyễn Văn A</td>
+                        <td>12</td>
+                        <td>Nam</td>
+                        <td>29/05/2017</td>
+                        <td>29/05/2017</td>
+                        <td>1</td>
+                        <td>28/06/2017</td>
+                        <td>Đã hết hạn</td>
+                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
+                        </td>
+                        <td>button</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
       </div>
     </div>
+    <footer class="footer">
+        <h4>Hệ thống phòng tập <span class="blue">Gym và Aerobic Olympia</span>: 150 Đoàn Hữu Trưng, Hòa An, Cẩm Lệ, Đà Nẵng</h4>
+    </footer>
   </div>
 </template>
 
@@ -275,7 +393,7 @@ export default {
   },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      msg: 'Hệ thống quản lý thành viên',
       listgioitinh: [{
         value: 'Nam',
         label: 'Nam'
@@ -446,7 +564,10 @@ export default {
     }
   }
 }
+
 </script>
+
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -458,26 +579,112 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+.titleMain {
+    text-align: center;
+}
+.titleSearchMem {
+    color: #2196F3;
+}
+.titleh4 {
+    color: red;
+    text-align: center;
+}
 .fullform {
   width: 100%;
 }
 .form-group {
   width:100%;
+  padding: 10px;
 }
 .addbtn {
-  width:50px;
-  height:50px;
-  border-radius: 50%;
+  /*width:50px;*/
+  /*height:50px;*/
+  border-radius: 5px;
   float: right;
-  margin-right: 50px;
+  margin: 20px;
 }
+
+/*--------------------
+        Table area
+        --------------------*/
+table {
+    margin-bottom: 0;
+}
+table thead {
+    background: #2196F3;
+    color: #fff;
+}
+table thead th {
+    text-align: center;
+    /*font-weight: normal;*/
+    font-size: 16px;
+    padding: 12px 8px;
+}
+table tbody {
+  counter-reset: rowNumber;
+}
+table tr {
+  counter-increment: rowNumber;
+}
+table tr td:first-child::before {
+  content: counter(rowNumber);
+  min-width: 1em;
+  margin-right: 0.5em;
+}
+table tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+
+table tbody tr:hover {
+    background: #D5ECFF;
+    transition-duration: 500ms;
+}
+.titleAll {
+    text-align: center;
+    color: #2196F3;
+}
+
+.listHethan {
+    padding: 20px 0;
+}
+.listHethan .titleHethan {
+    color: #833200;
+    text-align: center;
+}
+.listHethan table thead {
+    background: #FFD24B;
+}
+.listHethan table thead th{
+    color: #333;
+}
+.listHethan table tbody td {
+    background: #FFFF86;
+}
+.listHethan table tbody tr:hover td{
+    background: #FBF9E1;
+    transition-duration: 500ms;
+}
+.listHide table thead {
+    background: #0E3F52;
+}
+.listHide .titleHide {
+    color: #0E3F52;
+    text-align: center;
+}
+.red_italic {
+    text-align: center;
+    color: #ff0000;
+    font-style: italic;
+}
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
 
 a {
-  color: #42b983;
+  color: #2196F3;
 }
 .switch {
   position: relative;
@@ -485,7 +692,6 @@ a {
   width: 60px;
   height: 34px;
 }
-
 .switch input {display:none;}
 
 .slider {
@@ -511,7 +717,6 @@ a {
   -webkit-transition: .4s;
   transition: .4s;
 }
-
 input:checked + .slider {
   background-color: #2196F3;
 }
@@ -525,12 +730,26 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+.btnEdit span:hover{
+    color: #2196F3;
+}
+.searchMember input {
+    text-indent: 5px;
+}
+#search .form-group {
+    padding: 0;
+}
 .user {
   transition: 1s;
 }
-/* Rounded sliders */
+/*--------------------
+        Rounded sliders
+        --------------------*/
 .slider.round {
   border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
@@ -539,9 +758,27 @@ input:checked + .slider:before {
   opacity: 0
 }
 .updatefun {
-  cursor: pointer;
+    color: #00508F;
+    cursor: pointer;
+    font-size: 25px;
 }
-.slider.round:before {
-  border-radius: 50%;
+.footer {
+    text-align: center;
+}
+/*--------------------
+        helper
+        --------------------*/
+
+.blue {
+    color: #2196F3;
+}
+.tac {
+    text-align: center;
+}
+.tal {
+    text-align: left;
+}
+.mgn_left_10 {
+    margin-left: 10px;
 }
 </style>
