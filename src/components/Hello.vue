@@ -19,6 +19,15 @@
           <div class="panel-body ">
             <h4 class="titleh4">Nhập thông tin thành viên mới</h4>
             <form class="form-inline" id="add" v-on:submit.prevent="addUser">
+              <el-col :xs="24" :sm="12" :md="6">
+                <div class="form-group">
+                  <label for="GoiTap">Họ và tên</label>
+                  <el-input class="fullform"
+                    placeholder="Nguyễn Văn A..."
+                    v-model="newuser.name">
+                  </el-input>
+                </div>
+              </el-col>
               <el-col :sx="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="gioitinh">Giới Tính</label>
@@ -47,10 +56,10 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="GoiTap">Họ và tên</label>
+                <label for="lop">Gói tập</label>
                 <el-input class="fullform"
-                  placeholder="Nguyễn Văn A..."
-                  v-model="newuser.name">
+                  placeholder=""
+                  v-model="newuser.goitap">
                 </el-input>
               </div>
             </el-col>
@@ -110,6 +119,14 @@
           <div class="panel-body">
             <h4 class="titleh4">Chỉnh sửa thông tin thành viên</h4>
             <form class="form-inline" id="add" v-on:submit.prevent="addUser">
+              <el-col :xs="24" :sm="12" :md="6">
+                <div class="form-group">
+                  <label for="GoiTap">Họ và tên</label>
+                  <el-input class="fullform"
+                    v-model="userupdate.name">
+                  </el-input>
+                </div>
+              </el-col>
               <el-col :sx="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="gioitinh">Giới Tính</label>
@@ -138,9 +155,10 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="GoiTap">Họ và tên</label>
+                <label for="lop">Gói tập</label>
                 <el-input class="fullform"
-                  v-model="userupdate.name">
+                  placeholder=""
+                  v-model="userupdate.goitap">
                 </el-input>
               </div>
             </el-col>
@@ -271,40 +289,27 @@
                         <th>Ẩn</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                  <transition-group name="fade" tag="tbody">
+                    <tr v-if="!userhh.checked" v-for="userhh in filterUserhethan"  v-bind:key="userhh">
                         <td><!--STT--></td>
                         <td class="tal">Aerobic</td>
                         <td class="tal"><!--Gói tập--></td>
-                        <td class="tal">Nguyễn Văn A</td>
-                        <td>12</td>
-                        <td>Nam</td>
-                        <td>29/05/2017</td>
-                        <td>29/05/2017</td>
-                        <td>1</td>
-                        <td>28/06/2017</td>
-                        <td>Đã hết hạn</td>
-                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
+                        <td class="tal">{{userhh.name}}</td>
+                        <td>{{userhh.birthday}}</td>
+                        <td>{{userhh.gioitinh}}</td>
+                        <td>{{userhh.phathanh}}</td>
+                        <td>{{userhh.giahan}}</td>
+                        <td>{{userhh.sothang}}</td>
+                        <td>{{userhh.hethan}}</td>
+                        <td>{{userhh.trangthai}}</td>
+                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(userhh)" title="Chỉnh sửa"></span>
                         </td>
-                        <td>button</td>
+                        <td><label class="switch" >
+                        <input v-on:click="check(userhh)" type="checkbox" id="checkbox" v-model="userhh.checked" checked>
+                        <div class="slider round"></div>
+                        </label></td>
                     </tr>
-                    <tr>
-                        <td><!--STT--></td>
-                        <td class="tal">Aerobic</td>
-                        <td class="tal"><!--Gói tập--></td>
-                        <td class="tal">Nguyễn Văn A</td>
-                        <td>12</td>
-                        <td>Nam</td>
-                        <td>29/05/2017</td>
-                        <td>29/05/2017</td>
-                        <td>1</td>
-                        <td>28/06/2017</td>
-                        <td>Đã hết hạn</td>
-                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
-                        </td>
-                        <td>button</td>
-                    </tr>
-                </tbody>
+                </transition-group>
             </table>
         </div>
         <div class="listHide">
@@ -329,37 +334,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><!--STT--></td>
-                        <td class="tal">Aerobic</td>
-                        <td class="tal"><!--Gói tập--></td>
-                        <td class="tal">Nguyễn Văn A</td>
-                        <td>12</td>
-                        <td>Nam</td>
-                        <td>29/05/2017</td>
-                        <td>29/05/2017</td>
-                        <td>1</td>
-                        <td>28/06/2017</td>
-                        <td>Đã hết hạn</td>
-                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
-                        </td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td><!--STT--></td>
-                        <td class="tal">Aerobic</td>
-                        <td class="tal"><!--Gói tập--></td>
-                        <td class="tal">Nguyễn Văn A</td>
-                        <td>12</td>
-                        <td>Nam</td>
-                        <td>29/05/2017</td>
-                        <td>29/05/2017</td>
-                        <td>1</td>
-                        <td>28/06/2017</td>
-                        <td>Đã hết hạn</td>
-                        <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
-                        </td>
-                        <td>button</td>
+                    <tr v-for="userhh in filtercheckan"  v-bind:key="userhh">
+                      <td><!--STT--></td>
+                      <td class="tal">Aerobic</td>
+                      <td class="tal"><!--Gói tập--></td>
+                      <td class="tal">{{userhh.name}}</td>
+                      <td>{{userhh.birthday}}</td>
+                      <td>{{userhh.gioitinh}}</td>
+                      <td>{{userhh.phathanh}}</td>
+                      <td>{{userhh.giahan}}</td>
+                      <td>{{userhh.sothang}}</td>
+                      <td>{{userhh.hethan}}</td>
+                      <td>{{userhh.trangthai}}</td>
+                      <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(userhh)" title="Chỉnh sửa"></span>
+                      </td>
+                      <td><label class="switch" >
+                      <input v-on:click="uncheck(userhh)" type="checkbox" id="checkbox" v-model="userhh.checked" checked>
+                      <div class="slider round"></div>
+                      </label></td>
                     </tr>
                 </tbody>
             </table>
@@ -428,9 +420,11 @@ export default {
         phathanhkoshow: '',
         sothang: '',
         giahan: '',
+        goitap: '',
         giahankoshow: '',
         hethan: '',
         hethankoshow: '',
+        checkhethan: false,
         trangthai: '',
         key: '',
         checked: false
@@ -476,6 +470,7 @@ export default {
       })
       var searchitem = this.searchString
       // console.log(articlearray)
+      console.log(articlearray)
       if (!searchitem) {
         return articlearray
       }
@@ -487,6 +482,25 @@ export default {
         }
       })
       return articlearray
+    },
+    filterUserhethan: function () {
+      console.log(this.listuser)
+      var arrayuser = this.listuser.filter(function (item) {
+        if (item.checkhethan === true) {
+          return item
+        }
+      })
+      console.log(arrayuser)
+      return arrayuser
+    },
+    filtercheckan: function () {
+      var arrayuser = this.listuser.filter(function (item) {
+        if (item.checked === true) {
+          return item
+        }
+      })
+      console.log(arrayuser)
+      return arrayuser
     }
   },
   methods: {
@@ -515,6 +529,14 @@ export default {
       this.newuser.hethan = datehethan
       this.newuser.hethankoshow = moment(getdate).format('L')
       this.newuser.stt = this.listuser.length + 1
+      var ngayhientai = moment().date()
+      var thanghientai = moment().month() + 1
+      var namhientai = moment().year()
+      if ((ngayhientai >= moment(this.newuser.hethankoshow).date()) && (thanghientai >= moment(this.newuser.hethankoshow).month() + 1) && (namhientai >= moment(this.newuser.hethankoshow).year())) {
+        this.newuser.checkhethan = true
+      } else {
+        this.newuser.checkhethan = false
+      }
       danhsachref.push(this.newuser)
       this.newuser.stt = ''
       this.newuser.goi = ''
@@ -544,6 +566,18 @@ export default {
       this.userupdate.hethan = datehethan
       this.userupdate.hethankoshow = moment(getdate).format('L')
       this.userupdate.giahan = y
+      if (this.userupdate.key === '') {
+        this.userupdate.key = this.key1
+        console.log('->>>.' + this.userupdate.key)
+      }
+      var ngayhientai = moment().date()
+      var thanghientai = moment().month() + 1
+      var namhientai = moment().year()
+      if ((ngayhientai >= moment(this.userupdate.hethankoshow).date()) && (thanghientai >= moment(this.userupdate.hethankoshow).month() + 1) && (namhientai >= moment(this.userupdate.hethankoshow).year())) {
+        this.userupdate.checkhethan = true
+      } else {
+        this.userupdate.checkhethan = false
+      }
       delete this.userupdate['.key']
       danhsachref.child(this.key2).set(this.userupdate)
       this.userupdate = ''
@@ -568,6 +602,13 @@ export default {
       console.log(user.giahan)
     },
     check: function (user) {
+      var key = user['.key']
+      delete user['.key']
+      danhsachref.child(key).set(user)
+      console.log('check')
+      console.log(user.checked)
+    },
+    uncheck: function (user) {
       var key = user['.key']
       delete user['.key']
       danhsachref.child(key).set(user)
