@@ -77,13 +77,13 @@
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày phát hành</label>
-                <input class="form-group el-input__inner" type="date" v-model="newuser.phathanh">
+                <input class="form-group el-input__inner" type="date" v-model="newuser.phathanhkoshow">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày gia hạn</label>
-                <input class="form-group el-input__inner" type="date" v-model="newuser.giahan">
+                <input class="form-group el-input__inner" type="date" v-model="newuser.giahankoshow">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
@@ -147,7 +147,11 @@
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Năm sinh</label>
-                <input class="form-group el-input__inner" type="date" v-model="userupdate.birthday">
+                <el-input
+                  placeholder="Nhập năm sinh"
+                  icon="date"
+                  v-model="userupdate.birthday">
+                </el-input>
               </div>
             </el-col>
             <!-- <el-col :xs="24" :sm="12" :md="6">
@@ -162,13 +166,13 @@
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày phát hành</label>
-                <input class="form-group el-input__inner" type="date" v-model="userupdate.phathanh">
+                <input class="form-group el-input__inner" type="date" v-model="userupdate.phathanhkoshow">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày gia hạn</label>
-                <input class="form-group el-input__inner" type="date" v-model="userupdate.giahan">
+                <input class="form-group el-input__inner" type="date" v-model="userupdate.giahankoshow">
               </div>
             </el-col>
             <el-col :xs="24" :sm="12" :md="6">
@@ -421,9 +425,12 @@ export default {
         gioitinh: '',
         diachi: '',
         phathanh: '',
+        phathanhkoshow: '',
         sothang: '',
         giahan: '',
+        giahankoshow: '',
         hethan: '',
+        hethankoshow: '',
         trangthai: '',
         key: '',
         checked: false
@@ -457,8 +464,8 @@ export default {
       var thanghientai = moment().month() + 1
       var namhientai = moment().year()
       var articlearray = this.listuser.map(function (item) {
-        if ((ngayhientai >= moment(item.hethan).date()) && (thanghientai >= moment(item.hethan).month() + 1) && (namhientai >= moment(item.hethan).year())) {
-          if (ngayhientai >= moment(item.hethan).date()) {
+        if ((ngayhientai >= moment(item.hethankoshow).date()) && (thanghientai >= moment(item.hethankoshow).month() + 1) && (namhientai >= moment(item.hethankoshow).year())) {
+          if (ngayhientai >= moment(item.hethankoshow).date()) {
             console.log('dau tien')
           }
           item.trangthai = 'Đã hết hạn'
@@ -484,15 +491,17 @@ export default {
   },
   methods: {
     addUser: function () {
-      var dategiahan = moment(this.newuser.giahan)
+      var dategiahan = moment(this.newuser.giahankoshow)
       // var parts = dategiahan.match(/(\d+)/g)
       // var dateafterconvert = new Date(parts[0], parts[1] - 1, parts[2])
       console.log(moment(dategiahan).format('DD/MM/YYYY'))
       var x = moment(dategiahan).format('DD/MM/YYYY')
       var y = moment(dategiahan).format('L')
-      var datephathanh = moment(this.newuser.phathanh)
+      var datephathanh = moment(this.newuser.phathanhkoshow)
       var xph = moment(datephathanh).format('DD/MM/YYYY')
       console.log(xph)
+      this.newuser.giahankoshow = moment(dategiahan).format('L')
+      this.newuser.phathanhkoshow = moment(datephathanh).format('L')
       this.newuser.phathanh = xph
       var ngaygiahan = moment(dategiahan).date()
       var thanggiahan = moment(dategiahan).month() + 1
@@ -504,6 +513,7 @@ export default {
       var datehethan = moment(getdate).format('DD/MM/YYYY')
       console.log(datehethan)
       this.newuser.hethan = datehethan
+      this.newuser.hethankoshow = moment(getdate).format('L')
       this.newuser.stt = this.listuser.length + 1
       danhsachref.push(this.newuser)
       this.newuser.stt = ''
@@ -520,15 +530,19 @@ export default {
       this.newuser.trangthai = ''
     },
     updateUser: function () {
-      var dategiahan = moment(this.userupdate.giahan)
+      var dategiahan = moment(this.userupdate.giahankoshow)
       var x = moment(dategiahan).format('L')
       var y = moment(dategiahan).format('DD/MM/YYYY')
-      var datephathanh = moment(this.userupdate.phathanh)
+      var datephathanh = moment(this.userupdate.phathanhkoshow)
       var xph = moment(datephathanh).format('DD/MM/YYYY')
+      this.userupdate.giahankoshow = moment(dategiahan).format('L')
+      this.userupdate.phathanhkoshow = moment(datephathanh).format('L')
       this.userupdate.phathanh = xph
+      console.log(this.userupdate.phathanh)
       var getdate = moment(x).add(30 * this.userupdate.sothang, 'days')
       var datehethan = moment(getdate).format('DD/MM/YYYY')
       this.userupdate.hethan = datehethan
+      this.userupdate.hethankoshow = moment(getdate).format('L')
       this.userupdate.giahan = y
       delete this.userupdate['.key']
       danhsachref.child(this.key2).set(this.userupdate)
@@ -542,8 +556,6 @@ export default {
     },
     update: function (user) {
       this.userupdate = user
-      this.userupdate.phathanh = moment(user.phathanh).format('L')
-      this.userupdate.giahan = moment(user.giahan).format('L')
       console.log(this.userupdate.phathanh)
       console.log(this.userupdate.giahan)
       this.key1 = user['.key']
