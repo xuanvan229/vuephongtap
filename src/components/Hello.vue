@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-
     <h2>{{checked}}</h2>
     <el-row>
       <el-col :span="24">
@@ -333,7 +332,7 @@
                         <th>Hiện</th>
                     </tr>
                 </thead>
-                <tbody>
+                  <transition-group name="fade" tag="tbody">
                     <tr v-for="userhh in filtercheckan"  v-bind:key="userhh">
                       <td><!--STT--></td>
                       <td class="tal">Aerobic</td>
@@ -353,7 +352,7 @@
                       <div class="slider round"></div>
                       </label></td>
                     </tr>
-                </tbody>
+                </transition-group>
             </table>
         </div>
       </div>
@@ -447,16 +446,17 @@ export default {
       checkupdate: false,
       checked: false,
       userupdate: '',
+      userupdate2: '',
       key1: '',
       key2: ''
     }
   },
   computed: {
     filterUser: function () {
-      console.log(this.listuser)
       var ngayhientai = moment().date()
       var thanghientai = moment().month() + 1
       var namhientai = moment().year()
+      console.log(this.listuser)
       var articlearray = this.listuser.map(function (item) {
         if ((ngayhientai >= moment(item.hethankoshow).date()) && (thanghientai >= moment(item.hethankoshow).month() + 1) && (namhientai >= moment(item.hethankoshow).year())) {
           if (ngayhientai >= moment(item.hethankoshow).date()) {
@@ -468,9 +468,9 @@ export default {
         }
         return item
       })
+      console.log(articlearray)
       var searchitem = this.searchString
       // console.log(articlearray)
-      console.log(articlearray)
       if (!searchitem) {
         return articlearray
       }
@@ -484,13 +484,11 @@ export default {
       return articlearray
     },
     filterUserhethan: function () {
-      console.log(this.listuser)
       var arrayuser = this.listuser.filter(function (item) {
         if (item.checkhethan === true) {
           return item
         }
       })
-      console.log(arrayuser)
       return arrayuser
     },
     filtercheckan: function () {
@@ -499,7 +497,6 @@ export default {
           return item
         }
       })
-      console.log(arrayuser)
       return arrayuser
     }
   },
@@ -508,24 +505,16 @@ export default {
       var dategiahan = moment(this.newuser.giahankoshow)
       // var parts = dategiahan.match(/(\d+)/g)
       // var dateafterconvert = new Date(parts[0], parts[1] - 1, parts[2])
-      console.log(moment(dategiahan).format('DD/MM/YYYY'))
       var x = moment(dategiahan).format('DD/MM/YYYY')
       var y = moment(dategiahan).format('L')
       var datephathanh = moment(this.newuser.phathanhkoshow)
       var xph = moment(datephathanh).format('DD/MM/YYYY')
-      console.log(xph)
       this.newuser.giahankoshow = moment(dategiahan).format('L')
       this.newuser.phathanhkoshow = moment(datephathanh).format('L')
       this.newuser.phathanh = xph
-      var ngaygiahan = moment(dategiahan).date()
-      var thanggiahan = moment(dategiahan).month() + 1
-      var namgiahan = moment(dategiahan).year()
-      console.log('Ngay ' + ngaygiahan + ' Thang ' + thanggiahan + ' Nam ' + namgiahan)
-      console.log(ngaygiahan)
       this.newuser.giahan = x
       var getdate = moment(y).add(30 * this.newuser.sothang, 'days')
       var datehethan = moment(getdate).format('DD/MM/YYYY')
-      console.log(datehethan)
       this.newuser.hethan = datehethan
       this.newuser.hethankoshow = moment(getdate).format('L')
       this.newuser.stt = this.listuser.length + 1
@@ -578,9 +567,35 @@ export default {
       } else {
         this.userupdate.checkhethan = false
       }
-      delete this.userupdate['.key']
-      danhsachref.child(this.key2).set(this.userupdate)
-      this.userupdate = ''
+      this.hamupdate(this.userupdate, this.userupdate.birthday, 'birthday')
+      this.hamupdate(this.userupdate, this.userupdate.checked, 'checked')
+      this.hamupdate(this.userupdate, this.userupdate.checkhethan, 'checkhethan')
+      this.hamupdate(this.userupdate, this.userupdate.diachi, 'diachi')
+      this.hamupdate(this.userupdate, this.userupdate.giahan, 'giahan')
+      this.hamupdate(this.userupdate, this.userupdate.giahankoshow, 'giahankoshow')
+      this.hamupdate(this.userupdate, this.userupdate.gioitinh, 'gioitinh')
+      this.hamupdate(this.userupdate, this.userupdate.goi, 'goi')
+      this.hamupdate(this.userupdate, this.userupdate.goitap, 'goitap')
+      this.hamupdate(this.userupdate, this.userupdate.hethan, 'hethan')
+      this.hamupdate(this.userupdate, this.userupdate.hethankoshow, 'hethankoshow')
+      this.hamupdate(this.userupdate, this.userupdate.key, 'key')
+      this.hamupdate(this.userupdate, this.userupdate.lop, 'lop')
+      this.hamupdate(this.userupdate, this.userupdate.name, 'name')
+      this.hamupdate(this.userupdate, this.userupdate.phathanh, 'phathanh')
+      this.hamupdate(this.userupdate, this.userupdate.phathanhkoshow, 'phathanhkoshow')
+      this.hamupdate(this.userupdate, this.userupdate.sothang, 'sothang')
+      this.hamupdate(this.userupdate, this.userupdate.stt, 'stt')
+      this.hamupdate(this.userupdate, this.userupdate.trangthai, 'trangthai')
+
+      // let key = this.userupdate['.key']
+      // delete this.userupdate['.key']
+      // console.log(this.userupdate)
+      // console.log(key)
+      // danhsachref.child(key).set(this.userupdate)
+      // console.log(this.listuser)
+      // this.userupdate = ''
+      // console.log(this.userupdate)
+      // this.filterUser
     },
     showadduser: function () {
       this.checkadd = true
@@ -589,9 +604,8 @@ export default {
       this.checkadd = false
     },
     update: function (user) {
-      this.userupdate = user
-      console.log(this.userupdate.phathanh)
-      console.log(this.userupdate.giahan)
+      this.userupdate2 = user
+      this.userupdate = this.userupdate2
       this.key1 = user['.key']
       if (this.key1 != null) {
         this.key2 = this.key1
@@ -602,18 +616,23 @@ export default {
       console.log(user.giahan)
     },
     check: function (user) {
-      var key = user['.key']
-      delete user['.key']
-      danhsachref.child(key).set(user)
-      console.log('check')
-      console.log(user.checked)
+      // var key = user['.key']
+      // delete user['.key']
+      // danhsachref.child(key).set(user)
+      this.hamupdate(user, user.checked, 'checked')
+      // console.log('check')
+      // console.log(user.checked)
+    },
+    hamupdate: function (user, value, truong) {
+      danhsachref.child(user['.key']).child(truong).set(value)
     },
     uncheck: function (user) {
-      var key = user['.key']
-      delete user['.key']
-      danhsachref.child(key).set(user)
-      console.log('check')
-      console.log(user.checked)
+      this.hamupdate(user, user.checked, 'checked')
+      // var key = user['.key']
+      // delete user['.key']
+      // danhsachref.child(key).set(user)
+      // console.log('check')
+      // console.log(user.checked)
     }
   }
 }
