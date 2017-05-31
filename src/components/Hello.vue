@@ -248,8 +248,8 @@
               <!-- <td class="tac">{{user.stt}}</td> -->
               <td><!-- dành cho stt --></td>
               <!-- <td>{{user.makh}}</td> -->
-              <td class="tal">{{user.lop}}</td>
               <td class="tal">{{user.goi}}</td>
+              <td class="tal">{{user.goitap}}</td>
               <td class="tal">{{user.name}}</td>
               <td>{{user.birthday}}</td>
               <td class="tal">{{user.gioitinh}}</td>
@@ -291,8 +291,8 @@
                   <transition-group name="fade" tag="tbody">
                     <tr v-if="!userhh.checked" v-for="userhh in filterUserhethan"  v-bind:key="userhh">
                         <td><!--STT--></td>
-                        <td class="tal">Aerobic</td>
-                        <td class="tal"><!--Gói tập--></td>
+                        <td class="tal">{{userhh.goi}}</td>
+                        <td class="tal">{{userhh.goitap}}</td>
                         <td class="tal">{{userhh.name}}</td>
                         <td>{{userhh.birthday}}</td>
                         <td>{{userhh.gioitinh}}</td>
@@ -329,14 +329,14 @@
                         <th>Ngày hết hạn</th>
                         <th>Trạng thái</th>
                         <th>Cập nhật</th>
-                        <th>Hiện</th>
+                        <th>Ẩn</th>
                     </tr>
                 </thead>
                   <transition-group name="fade" tag="tbody">
                     <tr v-for="userhh in filtercheckan"  v-bind:key="userhh">
                       <td><!--STT--></td>
-                      <td class="tal">Aerobic</td>
-                      <td class="tal"><!--Gói tập--></td>
+                      <td class="tal">{{userhh.goi}}</td>
+                      <td class="tal">{{userhh.goitap}}</td>
                       <td class="tal">{{userhh.name}}</td>
                       <td>{{userhh.birthday}}</td>
                       <td>{{userhh.gioitinh}}</td>
