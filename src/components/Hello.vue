@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    <h2>{{checked}}</h2>
     <el-row>
       <el-col :span="24">
         <el-col :xs="24" :sm="24" :md="24">
@@ -180,12 +179,12 @@
                 </el-input>
               </div>
             </el-col> -->
-            <el-col :xs="24" :sm="12" :md="6">
+            <!-- <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày phát hành</label>
                 <input class="form-group el-input__inner" type="date" v-model="userupdate.phathanhkoshow">
               </div>
-            </el-col>
+            </el-col> -->
             <el-col :xs="24" :sm="12" :md="6">
               <div class="form-group">
                 <label for="GoiTap">Ngày gia hạn</label>
@@ -209,6 +208,7 @@
         </div>
       </el-col>
     </el-row>
+
     <!-- <div class="page-header">
       <h1>{{msg}}</h1>
     </div> -->
@@ -241,6 +241,7 @@
               <th>Trạng thái</th>
               <th>Cập nhật</th>
               <th>Ẩn</th>
+              <th>Xoá</th>
             </tr>
           </thead>
             <transition-group name="fade" tag="tbody">
@@ -265,6 +266,7 @@
               <input v-on:click="check(user)" type="checkbox" id="checkbox" v-model="user.checked" checked>
               <div class="slider round"></div>
               </label></td>
+              <td><span class="el-icon-delete updatefun" v-on:click="xoauser(user)" title="Chỉnh sửa"></span></td>
             </tr>
           </transition-group>
         </table>
@@ -456,19 +458,14 @@ export default {
       var ngayhientai = moment().date()
       var thanghientai = moment().month() + 1
       var namhientai = moment().year()
-      console.log(this.listuser)
       var articlearray = this.listuser.map(function (item) {
         if ((ngayhientai >= moment(item.hethankoshow).date()) && (thanghientai >= moment(item.hethankoshow).month() + 1) && (namhientai >= moment(item.hethankoshow).year())) {
-          if (ngayhientai >= moment(item.hethankoshow).date()) {
-            console.log('dau tien')
-          }
           item.trangthai = 'Đã hết hạn'
         } else {
           item.trangthai = 'Chưa hết hạn'
         }
         return item
       })
-      console.log(articlearray)
       var searchitem = this.searchString
       // console.log(articlearray)
       if (!searchitem) {
@@ -549,7 +546,6 @@ export default {
       this.userupdate.giahankoshow = moment(dategiahan).format('L')
       this.userupdate.phathanhkoshow = moment(datephathanh).format('L')
       this.userupdate.phathanh = xph
-      console.log(this.userupdate.phathanh)
       var getdate = moment(x).add(30 * this.userupdate.sothang, 'days')
       var datehethan = moment(getdate).format('DD/MM/YYYY')
       this.userupdate.hethan = datehethan
@@ -557,7 +553,6 @@ export default {
       this.userupdate.giahan = y
       if (this.userupdate.key === '') {
         this.userupdate.key = this.key1
-        console.log('->>>.' + this.userupdate.key)
       }
       var ngayhientai = moment().date()
       var thanghientai = moment().month() + 1
@@ -586,7 +581,7 @@ export default {
       this.hamupdate(this.userupdate, this.userupdate.sothang, 'sothang')
       this.hamupdate(this.userupdate, this.userupdate.stt, 'stt')
       this.hamupdate(this.userupdate, this.userupdate.trangthai, 'trangthai')
-
+      this.checkupdate = false
       // let key = this.userupdate['.key']
       // delete this.userupdate['.key']
       // console.log(this.userupdate)
@@ -610,10 +605,7 @@ export default {
       if (this.key1 != null) {
         this.key2 = this.key1
       }
-      console.log(this.key1)
-      console.log(this.key2)
       this.checkupdate = true
-      console.log(user.giahan)
     },
     check: function (user) {
       // var key = user['.key']
@@ -633,6 +625,9 @@ export default {
       // danhsachref.child(key).set(user)
       // console.log('check')
       // console.log(user.checked)
+    },
+    xoauser: function (user) {
+      danhsachref.child(user['.key']).remove()
     }
   }
 }
