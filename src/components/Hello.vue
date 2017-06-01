@@ -283,10 +283,6 @@
               <div class="slider round"></div>
               </label></td>
               <td v-else></td>
-<<<<<<< HEAD
-              <td><span class="el-icon-delete updatefun" v-on:click="xoauser(user)" title="Xóa"></span></td>
-=======
->>>>>>> 1a01c09eab01363860d95cbfeb41737e9a8556a1
             </tr>
           </transition-group>
         </table>
@@ -374,7 +370,7 @@
                       <input v-on:click="uncheck(userhh)" type="checkbox" id="checkbox" v-model="userhh.checked" checked>
                       <div class="slider round"></div>
                       </label></td>
-                      <td><span class="el-icon-delete updatefun" v-on:click="xoauser(userhh)" title="Chỉnh sửa"></span></td>
+                      <td><span class="el-icon-delete updatefun red" v-on:click="xoauser(userhh)" title="Xóa"></span></td>
                     </tr>
                 </transition-group>
             </table>
@@ -958,6 +954,9 @@ input {
         --------------------*/
 .blue {
     color: #32A1F9;
+}
+.red {
+    color: #E00000;
 }
 .tac {
     text-align: center;
