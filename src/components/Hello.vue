@@ -1,5 +1,22 @@
 <template>
   <div class="hello">
+    <div v-if="!dangnhap">
+      <el-input
+        placeholder="Pick a date"
+        icon="search"
+        v-model="username"
+        >
+      </el-input>
+      <el-input
+      placeholder="Pick a date"
+      icon="search"
+      v-model="password"
+      >
+    </el-input>
+    <el-button type="primary" v-on:click="funcdangnhap()">Primary Button</el-button>
+    <label v-if="errr">{{messageerr}}</label>
+    </div>
+    <div v-else>
     <el-row>
       <el-col :span="24">
         <el-col :xs="24" :sm="24" :md="24">
@@ -241,7 +258,6 @@
               <th>Trạng thái</th>
               <th>Cập nhật</th>
               <th>Ẩn</th>
-              <th>Xoá</th>
             </tr>
           </thead>
             <transition-group name="fade" tag="tbody">
@@ -267,7 +283,10 @@
               <div class="slider round"></div>
               </label></td>
               <td v-else></td>
+<<<<<<< HEAD
               <td><span class="el-icon-delete updatefun" v-on:click="xoauser(user)" title="Xóa"></span></td>
+=======
+>>>>>>> 1a01c09eab01363860d95cbfeb41737e9a8556a1
             </tr>
           </transition-group>
         </table>
@@ -333,6 +352,7 @@
                         <th>Trạng thái</th>
                         <th>Cập nhật</th>
                         <th>Ẩn</th>
+                        <th>Xoá</th>
                     </tr>
                 </thead>
                   <transition-group name="fade" tag="tbody">
@@ -354,6 +374,7 @@
                       <input v-on:click="uncheck(userhh)" type="checkbox" id="checkbox" v-model="userhh.checked" checked>
                       <div class="slider round"></div>
                       </label></td>
+                      <td><span class="el-icon-delete updatefun" v-on:click="xoauser(userhh)" title="Chỉnh sửa"></span></td>
                     </tr>
                 </transition-group>
             </table>
@@ -364,11 +385,18 @@
         <h4>Hệ thống phòng tập <span class="blue">Gym và Aerobic Olympia</span>: 150 Đoàn Hữu Trưng, Hòa An, Cẩm Lệ, Đà Nẵng</h4>
     </footer>
   </div>
+    <simplert useRadius=true
+              useIcon=true
+              ref="simplert">
+      </simplert>
+  </div>
+
 </template>
 
 <script>
 import Firebase from 'Firebase'
 import moment from 'moment'
+
 let config = {
   apiKey: 'AIzaSyDg4PMF2hQ6ZtjywC1ZDzM9J0i-igqo-tI',
   authDomain: 'phongtap-95ebd.firebaseapp.com',
@@ -380,14 +408,16 @@ let config = {
 let app = Firebase.initializeApp(config)
 let db = app.database()
 let danhsachref = db.ref('danhsach')
-
+let admin = db.ref('admin')
 export default {
   name: 'hello',
   components: {
-    'vue-datetime-picker': require('vue-datetime-picker')
+    'vue-datetime-picker': require('vue-datetime-picker'),
+    'Simplert': require('vue2-simplert')
   },
   firebase: {
-    listuser: danhsachref
+    listuser: danhsachref,
+    usernamedn: admin
   },
   data () {
     return {
@@ -451,7 +481,12 @@ export default {
       userupdate: '',
       userupdate2: '',
       key1: '',
-      key2: ''
+      key2: '',
+      dangnhap: false,
+      username: '',
+      password: '',
+      messageerr: '',
+      errr: false
     }
   },
   computed: {
@@ -459,9 +494,23 @@ export default {
       var ngayhientai = moment().date()
       var thanghientai = moment().month() + 1
       var namhientai = moment().year()
+      console.log(this.usernamedn)
       var articlearray = this.listuser.map(function (item) {
-        if ((ngayhientai >= moment(item.hethankoshow).date()) && (thanghientai >= moment(item.hethankoshow).month() + 1) && (namhientai >= moment(item.hethankoshow).year())) {
+        console.log('=>>')
+        if (namhientai > moment(item.hethankoshow).year()) {
           item.trangthai = 'Đã hết hạn'
+        } else if (namhientai === moment(item.hethankoshow).year()) {
+          if (thanghientai > moment(item.hethankoshow).month() + 1) {
+            item.trangthai = 'Đã hết hạn'
+          } else if (thanghientai === moment(item.hethankoshow).month() + 1) {
+            if (ngayhientai >= moment(item.hethankoshow).date()) {
+              item.trangthai = 'Đã hết hạn'
+            } else {
+              item.trangthai = 'Chưa hết hạn'
+            }
+          } else {
+            item.trangthai = 'Chưa hết hạn'
+          }
         } else {
           item.trangthai = 'Chưa hết hạn'
         }
@@ -519,11 +568,30 @@ export default {
       var ngayhientai = moment().date()
       var thanghientai = moment().month() + 1
       var namhientai = moment().year()
-      if ((ngayhientai >= moment(this.newuser.hethankoshow).date()) && (thanghientai >= moment(this.newuser.hethankoshow).month() + 1) && (namhientai >= moment(this.newuser.hethankoshow).year())) {
+      if (namhientai > moment(this.newuser.hethankoshow).year()) {
         this.newuser.checkhethan = true
+      } else if (namhientai === moment(this.newuser.hethankoshow).year()) {
+        if (thanghientai > moment(this.newuser.hethankoshow).month() + 1) {
+          this.newuser.checkhethan = true
+        } else if (thanghientai === moment(this.newuser.hethankoshow).month() + 1) {
+          if (ngayhientai >= moment(this.newuser.hethankoshow).date()) {
+            this.newuser.checkhethan = true
+          } else {
+            this.newuser.checkhethan = false
+          }
+        } else {
+          this.newuser.checkhethan = false
+        }
       } else {
         this.newuser.checkhethan = false
       }
+      // if ((ngayhientai >= moment(this.newuser.hethankoshow).date()) && (thanghientai >= moment(this.newuser.hethankoshow).month() + 1) && (namhientai >= moment(this.newuser.hethankoshow).year())) {
+      //   console.log('het han')
+      //   this.newuser.checkhethan = true
+      // } else {
+      //   console.log('chua het han')
+      //   this.newuser.checkhethan = false
+      // }
       danhsachref.push(this.newuser)
       this.newuser.stt = ''
       this.newuser.goi = ''
@@ -558,11 +626,30 @@ export default {
       var ngayhientai = moment().date()
       var thanghientai = moment().month() + 1
       var namhientai = moment().year()
-      if ((ngayhientai >= moment(this.userupdate.hethankoshow).date()) && (thanghientai >= moment(this.userupdate.hethankoshow).month() + 1) && (namhientai >= moment(this.userupdate.hethankoshow).year())) {
+      if (namhientai > moment(this.userupdate.hethankoshow).year()) {
         this.userupdate.checkhethan = true
+      } else if (namhientai === moment(this.userupdate.hethankoshow).year()) {
+        if (thanghientai > moment(this.userupdate.hethankoshow).month() + 1) {
+          this.userupdate.checkhethan = true
+        } else if (thanghientai === moment(this.userupdate.hethankoshow).month() + 1) {
+          if (ngayhientai >= moment(this.userupdate.hethankoshow).date()) {
+            this.userupdate.checkhethan = true
+          } else {
+            this.userupdate.checkhethan = false
+          }
+        } else {
+          this.userupdate.checkhethan = false
+        }
       } else {
         this.userupdate.checkhethan = false
       }
+      // if ((ngayhientai >= moment(this.userupdate.hethankoshow).date()) && (thanghientai >= moment(this.userupdate.hethankoshow).month() + 1) && (namhientai >= moment(this.userupdate.hethankoshow).year())) {
+      //   console.log('het han')
+      //   this.userupdate.checkhethan = true
+      // } else {
+      //   console.log('chua het han')
+      //   this.userupdate.checkhethan = false
+      // }
       this.hamupdate(this.userupdate, this.userupdate.birthday, 'birthday')
       this.hamupdate(this.userupdate, this.userupdate.checked, 'checked')
       this.hamupdate(this.userupdate, this.userupdate.checkhethan, 'checkhethan')
@@ -600,6 +687,7 @@ export default {
       this.checkadd = false
     },
     update: function (user) {
+      window.scrollTo(0, 0)
       this.userupdate2 = user
       this.userupdate = this.userupdate2
       this.key1 = user['.key']
@@ -618,6 +706,16 @@ export default {
     },
     hamupdate: function (user, value, truong) {
       danhsachref.child(user['.key']).child(truong).set(value)
+    },
+    funcdangnhap: function () {
+      if (this.username === this.usernamedn[0].username && this.password === this.usernamedn[0].password) {
+        this.errr = false
+        this.messageerr = ''
+        this.dangnhap = true
+      } else {
+        this.errr = true
+        this.messageerr = 'Sai tài khoản hoặc mật khẩu'
+      }
     },
     uncheck: function (user) {
       this.hamupdate(user, user.checked, 'checked')
