@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
         <div v-if="!dangnhap" class="bodyLogin">
-            <div class="formLogin">
+            <form class="formLogin" method="post">
               <!-- <el-input
                 placeholder="Tài khoản"
                 v-model="username" class="inputLogin"
@@ -15,7 +15,7 @@
                 <input class="form-control" v-model="password" type="password" placeholder="Mật khẩu">
                 <button type="submit" v-on:click="funcdangnhap()" class="btnLogin btn">ĐĂNG NHẬP</button>
                 <label v-if="errr">{{messageerr}}</label>
-            </div>
+            </form>
         </div>
     <div v-else>
     <el-row>
@@ -219,7 +219,8 @@
               </div>
             </el-col>
             <el-col :xs="24" :sm="24" :md="24">
-            <el-button v-on:click="updateUser"type="primary" class="mgn_left_10">Cập nhật</el-button>
+            <el-button v-on:click="updateUser" type="primary" class="mgn_left_10" icon="check">Cập nhật</el-button>
+            <el-button v-on:click="updateUser" type="primary" class="btn-red" icon="close">Đóng</el-button>
             </el-col>
             </form>
           </div>
@@ -789,6 +790,9 @@ ul {
     width: 100%;
     border-radius: 0;
 }
+.panel-heading {
+    border-bottom: 1px solid #2196F3;
+}
 .titleMain {
     position: relative;
     text-align: center;
@@ -1004,6 +1008,10 @@ input {
 }
 .red {
     color: #E00000;
+}
+.btn-red {
+    background: #E00000;
+    border: 1px solid #E00000;
 }
 .tac {
     text-align: center;
