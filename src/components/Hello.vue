@@ -220,7 +220,7 @@
             </el-col>
             <el-col :xs="24" :sm="24" :md="24">
             <el-button v-on:click="updateUser" type="primary" class="mgn_left_10" icon="check">Cập nhật</el-button>
-            <el-button v-on:click="updateUser" type="primary" class="btn-red" icon="close">Đóng</el-button>
+            <el-button v-on:click="closeupdate" type="primary" class="btn-red" icon="close">Đóng</el-button>
             </el-col>
             </form>
           </div>
@@ -677,6 +677,9 @@ export default {
       // this.userupdate = ''
       // console.log(this.userupdate)
       // this.filterUser
+    },
+    closeupdate: function () {
+      this.checkupdate = false
     },
     showadduser: function () {
       this.checkadd = true
