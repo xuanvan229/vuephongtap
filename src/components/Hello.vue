@@ -1,21 +1,22 @@
 <template>
   <div class="hello">
-    <div v-if="!dangnhap">
-      <el-input
-        placeholder="Pick a date"
-        icon="search"
-        v-model="username"
-        >
-      </el-input>
-      <el-input
-      placeholder="Pick a date"
-      icon="search"
-      v-model="password"
-      >
-    </el-input>
-    <el-button type="primary" v-on:click="funcdangnhap()">Primary Button</el-button>
-    <label v-if="errr">{{messageerr}}</label>
-    </div>
+        <div v-if="!dangnhap" class="bodyLogin">
+            <div class="formLogin">
+              <!-- <el-input
+                placeholder="Tài khoản"
+                v-model="username" class="inputLogin"
+                >
+              </el-input>
+              <el-input
+                  placeholder="Mật khẩu"
+                  v-model="password" class="inputLogin">
+              </el-input> -->
+                <input class="form-control" v-model="username" type="text" placeholder="Tài khoản">
+                <input class="form-control" v-model="password" type="password" placeholder="Mật khẩu">
+                <button type="submit" v-on:click="funcdangnhap()" class="btnLogin btn">ĐĂNG NHẬP</button>
+                <label v-if="errr">{{messageerr}}</label>
+            </div>
+        </div>
     <div v-else>
     <el-row>
       <el-col :span="24">
@@ -741,6 +742,52 @@ h1, h2 {
 ul {
   list-style-type: none;
   padding: 0;
+}
+
+.bodyLogin {
+    background: url('../assets/background.jpg')center no-repeat;
+    background-color: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+.formLogin {
+    background: url('../assets/bg-form.png');
+    margin: auto;
+    width: 600px;
+    padding: 50px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.formLogin .el-input {
+    display: block;
+    margin: 10px auto;
+    border-radius: 0;
+}
+.formLogin label {
+    color: red;
+}
+.formLogin input {
+    height: 50px;
+    margin: 5px 0;
+    border-radius: 0;
+}
+.formLogin input:focus {
+    box-shadow: none;
+    border: 1px solid #2196F3;
+}
+.formLogin .btnLogin {
+    background: #2196F3;
+    color: #fff;
+    height: 50px;
+    width: 100%;
+    border-radius: 0;
 }
 .titleMain {
     position: relative;
