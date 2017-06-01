@@ -755,7 +755,7 @@ ul {
     z-index: -1;
 }
 .formLogin {
-    background: url('../assets/bg-form.png');
+    background: url('../assets/bg-form2.png');
     margin: auto;
     width: 600px;
     padding: 50px;
