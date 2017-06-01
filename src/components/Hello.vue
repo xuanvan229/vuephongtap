@@ -14,7 +14,7 @@
     <el-row v-if="checkadd">
       <el-col :span="24">
         <div class="panel panel-default">
-          <div class="panel-body ">
+          <div class="panel-body bgForm">
             <h4 class="titleh4">Nhập thông tin thành viên mới</h4>
             <form class="form-inline" id="add" v-on:submit.prevent="addUser">
               <el-col :xs="24" :sm="12" :md="6">
@@ -28,7 +28,7 @@
               </el-col>
               <el-col :sx="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="gioitinh">Giới Tính</label>
+                <label for="gioitinh">Giới tính</label>
                 <el-select class="fullform" v-model="newuser.gioitinh" placeholder="Nam/Nữ">
                   <el-option
                     v-for="item in listgioitinh"
@@ -114,7 +114,7 @@
       <el-col :span="24">
         <!-- <h1>Update user</h1> -->
         <div class="panel panel-default">
-          <div class="panel-body">
+          <div class="panel-body bgForm2">
             <h4 class="titleh4">Chỉnh sửa thông tin thành viên</h4>
             <form class="form-inline" id="add" v-on:submit.prevent="addUser">
               <el-col :xs="24" :sm="12" :md="6">
@@ -127,7 +127,7 @@
               </el-col>
               <el-col :sx="24" :sm="12" :md="6">
               <div class="form-group">
-                <label for="gioitinh">Giới Tính</label>
+                <label for="gioitinh">Giới tính</label>
                 <el-select class="fullform" v-model="userupdate.gioitinh" placeholder="Nam/Nữ">
                   <el-option
                     v-for="item in listgioitinh"
@@ -267,7 +267,7 @@
               <div class="slider round"></div>
               </label></td>
               <td v-else></td>
-              <td><span class="el-icon-delete updatefun" v-on:click="xoauser(user)" title="Chỉnh sửa"></span></td>
+              <td><span class="el-icon-delete updatefun" v-on:click="xoauser(user)" title="Xóa"></span></td>
             </tr>
           </transition-group>
         </table>
@@ -391,7 +391,7 @@ export default {
   },
   data () {
     return {
-      msg: 'Hệ thống quản lý thành viên',
+      msg: 'HỆ THỐNG QUẢN LÝ THÀNH VIÊN',
       listgioitinh: [{
         value: 'Nam',
         label: 'Nam'
@@ -639,6 +639,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 h1, h2 {
   font-weight: normal;
 }
@@ -648,7 +649,20 @@ ul {
   padding: 0;
 }
 .titleMain {
+    position: relative;
     text-align: center;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+}
+.titleMain:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 40%;
+    width: 20%;
+    height: 3px;
+    background: #2196F3;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 .titleSearchMem {
     color: #2196F3;
@@ -676,6 +690,7 @@ ul {
         Table area
         --------------------*/
 table {
+    border: 1px solid #E8E8E8;
     margin-bottom: 0;
 }
 table thead {
@@ -832,13 +847,19 @@ input:checked + .slider:before {
 }
 .footer {
     text-align: center;
+    color: #fff;
+}
+input {
+    color: #0070C8;
+}
+.el-input__inner {
+    color: #0070C8;
 }
 /*--------------------
         helper
         --------------------*/
-
 .blue {
-    color: #2196F3;
+    color: #32A1F9;
 }
 .tac {
     text-align: center;
