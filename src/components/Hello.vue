@@ -262,10 +262,11 @@
               <td>{{user.trangthai}}</td>
               <td class="tac btnEdit"><span class="el-icon-edit updatefun" v-on:click="update(user)" title="Chỉnh sửa"></span>
               </td>
-              <td><label class="switch" >
+              <td v-if="user.checkhethan"><label class="switch" >
               <input v-on:click="check(user)" type="checkbox" id="checkbox" v-model="user.checked" checked>
               <div class="slider round"></div>
               </label></td>
+              <td v-else></td>
               <td><span class="el-icon-delete updatefun" v-on:click="xoauser(user)" title="Chỉnh sửa"></span></td>
             </tr>
           </transition-group>
