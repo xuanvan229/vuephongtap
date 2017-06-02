@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
         <div v-if="!dangnhap" class="bodyLogin">
-            <form class="formLogin" method="post">
+            <form class="formLogin" @submit.prevent="funcdangnhap()">
               <!-- <el-input
                 placeholder="Tài khoản"
                 v-model="username" class="inputLogin"
